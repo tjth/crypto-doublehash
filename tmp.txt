@@ -1,0 +1,33 @@
+Done. String: CO409CryptographyEngineeringRunsNowForItsSecondYear228214
+Hash: 000000e41bbec85e82fe71cfb124f5f316414f7f0918265bb1974e3b6aca3002
+
+5a) returns a prime number that is not congruent to 1 mod 5. It is between 2^1023 and 2^4096 - 1. The first assert statement makes sure that the algorithm is considering
+very large prime numbers greater that 1023 bits long. This is to make the factorizing attack on RSA very hard. The second assert statement runs in the loop and checks that 
+the algorithm only runs 100*k times for efficiency reasons. If it hasn't found a prime, either something major is wrong with the RNG or the algorithm must be tried again. 
+b) returns a list p,q,N,d where N = pq for primes p, q, and d is the multiplicative inverse of5 (=e) mod N. N is is the public key for a RSA system, d must be kept private
+and p and q can be thrown away. The first assert is to make sure p and q are big enough as in part (a) to ensure the security of this RSA system. The second assert makes
+sure that N (= pq) is not a square number, as this would undermine the security. If it was, we could perform squaring in a loop to guess p=q and hence d as we know e. The 
+third assert ensures that the generated N is congruent to 1 mod 5 (=e), in line with the RSA protocol. If not, encryption/signatures would not work!
+c) k = log2 N => k is between 1024 and 4096. Hence r can be between 0 and 2^4096 -1. That's a lot! Relies on N being big. Relying on security of SHA256 to make sure r is 
+not guessable from K. k is big enough that guessing r yeilds a 1 in 2^4096 chance. K derivation is secure as SHA256 has not been broken yet, is a NIST standard. Even so, 
+we protect against length extension and future computational attacks similar to the ones that broke SHA1 by double hashing.
+d) The assertion is a bit of validation that it is a genuine message. c is caluclated as r**5 mod N, so this assertion checks that c < N which provides some guarantee
+that it has been calculated properly/isn't malicious. The correct r is recovered as in lecture notes proving the correctness of RSA (assuming the N, d and c are correct).
+As SHA256 is a deterministic hash function, the K recovered here is the same as generated before.
+e)Alice: get random k between 1024 and 4096 (may be platform dependent)
+             [p,q,N,d] = generateRSAKey(k)
+             Broadcast N, e=5
+
+  Bob: receive N, e=5, using hash functions to ensure integrity.
+          [K, c] = encryptRandomKeyWithRSA(N)
+          send c to Alice and keep K secret
+
+  Alice: recieve c
+         K = decryptRandomKeyWithRSA(N, d, c) - we have knowledge of all of these 
+
+
+(4a)
+q is a quadratic residue mod p if there exists an integer 0 < x < p such that x^2 = q mod p. http://mathworld.wolfram.com/QuadraticResidue.html
+Setting x0^3 + 7 = q, we can clearly see that there exists an integer (namely y) such that y^2 = q mod p. 
+(d) if y0 < p/2 then y0 < p - y0, otherwise p - y0 < y0 and these are both solutions. In (c) we saw that these two solutions cannot be equal so there is a unique smallest solution.
+(e) If we have an x0 such that x0^3 + 7 = y^2, we also have that p - (x0^3 + 7) solves the equation.

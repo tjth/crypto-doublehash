@@ -23,7 +23,11 @@ def doubleSHA256Hash(toHash):
   m = hashlib.sha256()
   m.update(toHash)
   n = hashlib.sha256()
-  n.update(m.hexdigest())
+
+  #hash the string and output byte form (digest) 
+  n.update(m.digest())
+
+  #hash these bytes but return the hex for comparison
   return n.hexdigest()
 
 
