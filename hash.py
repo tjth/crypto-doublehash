@@ -6,8 +6,12 @@ def main():
   baseString = "CO409CryptographyEngineeringRunsNowForItsSecondYear"
   i = 1
   
+  #set the difficulty as 6 zeroes followed by alls fs. We need
+  #to get less than or equal to this value to start with 6 zeroes.
   difficulty = '0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-  compareValue = int(difficulty, 16)
+
+  #convert above hex string to an integer (base 16 to base 10)
+  comparevalue = int(difficulty, 16)
 
   while(True):
     toHash = baseString + str(i)
